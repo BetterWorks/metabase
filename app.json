@@ -20,8 +20,5 @@
     {
       "url": "http://github.com/ryandotsmith/null-buildpack.git"
     }
-  ],
-  "scripts": {
-    "postdeploy": "java -jar ./target/uberjar/metabase-standalone.jar migrate up"
-  }
+  ]
 }
