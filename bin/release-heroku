@@ -12,10 +12,10 @@ TAG="$1"
 
 JAR_PATH="target/uberjar/metabase-standalone.jar"
 mkdir -p "$(dirname "$JAR_PATH")"
-if [ "$#" -gt 2 ]; then
+if [ "$#" -gt 1 ]; then
   cp "$2" "$JAR_PATH"
 else
-  curl "https://s3.amazonaws.com/metabase-beta/$TAG/metabase-standalone.jar" -o "$JAR_PATH"
+  curl --fail -v "https://s3.amazonaws.com/metabase-beta/$TAG/metabase-standalone.jar" -o "$JAR_PATH"
 fi
 
 # generate a README
