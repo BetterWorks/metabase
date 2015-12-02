@@ -19,4 +19,21 @@ if [ "$MAILGUN_SMTP_LOGIN" ]; then
     export MB_EMAIL_SMTP_PASSWORD="$MAILGUN_SMTP_PASSWORD"
 fi
 
-exec java $JAVA_OPTS -jar ./target/uberjar/metabase.jar
+# Pick sensible memory limits depending on what size Heroku dyno we are on
+limit=$(ulimit -u)
+case $limit in
+512)   # 2X Dyno
+  default_java_mem_opts="-Xmx768m"
+  ;;
+16384) # IX Dyno
+  default_java_mem_opts="-Xmx2g"
+  ;;
+32768) # PX Dyno
+  default_java_mem_opts="-Xmx12g"
+  ;;
+*) #1X Dyno
+  default_java_mem_opts="-Xmx300m -Xss512k"
+  ;;
+esac
+
+exec java $default_java_mem_opts -Dfile.encoding=UTF-8 $JAVA_OPTS -jar ./target/uberjar/metabase.jar
