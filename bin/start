@@ -2,9 +2,6 @@
 
 set -e
 
-# NOTE: The canonical source for this file is in the metabase/metabase repository.
-# Please update it there then copy to the metabase/metabase-deploy repository.
-
 # Translate various Heroku environment variables to Metabase equivalents
 
 if [ "$PORT" ]; then
@@ -76,23 +73,5 @@ if [ ! -z "$RDS_HOSTNAME" ]; then
     export MB_DB_PORT=$RDS_PORT
 fi
 
-# NOTE: commenting this out for now under the assumption that the jvm buildpack is doing this for us
-# Pick sensible memory limits depending on what size Heroku dyno we are on
-default_java_mem_opts=""
-#limit=$(ulimit -u)
-#case $limit in
-#512)   # 2X Dyno
-#  default_java_mem_opts="-Xmx768m"
-#  ;;
-#16384) # IX Dyno
-#  default_java_mem_opts="-Xmx2g"
-#  ;;
-#32768) # PX Dyno
-#  default_java_mem_opts="-Xmx12g"
-#  ;;
-#*) #1X Dyno
-#  default_java_mem_opts="-Xmx300m -Xss512k"
-#  ;;
-#esac
 
-exec java $default_java_mem_opts -Dfile.encoding=UTF-8 $JAVA_OPTS -jar ./target/uberjar/metabase.jar
+exec java $JAVA_OPTS -jar ./target/uberjar/metabase.jar
