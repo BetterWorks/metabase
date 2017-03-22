@@ -1,1 +1,1 @@
-web: ./bin/start
+web: bin/start-pgbouncer ./bin/start
